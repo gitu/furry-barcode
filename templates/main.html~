@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<title>Barcode Generator</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class=page>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  <h1>Barcode</h1>
+  <form id="pdf" method="get" action="{{ url_for('form') }}" class=add-entry>
+  	<dl>
+  		{%if codes is defined %}<input name="code" type="hidden" value="{{code}}" />
+  		<dt>Code<dd><select name="code">
+  		{% for c in codes %}
+  			{%if code is defined and c==code%}
+		     <option selected>{{c}}</option>
+  			{%else%}
+		     <option>{{c}}</option>
+		    {%endif%}
+		{% endfor %}
+		</select>
+		{%elif code is defined %}<input name="code" type="hidden" value="{{code}}" />
+		{%else%}
+		<dt>Code<dd><input name="code" type ="text" >
+  		{%endif%}
+  		<dt>Value/Start
+  		<dd><input name="value" type ="text" />
+		<dt>Count
+		<dd><input name="count" type ="text" />
+		<dd><input type="submit" value="Submit"/>
+	 </dl>
+  </form>
+</div>
+</head>

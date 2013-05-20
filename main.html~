@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>Barcode Generator</title>
+<script type="text/javascript">
+<!--
+function redirect(){
+    window.location = "../javascriptredirect.php"
+}
+//-->
+</script>
+</head>
+<body>
+
+  <h1>Barcode</h1>
+  <form id="pdf" method="get" action="/g">
+	<input name="code" value="Code" type="text" />
+	<input name="value" value="Value/Start" type ="text" />
+	<input name="count" value="Count" type ="text" />
+	<input type="submit" value="Submit"/>
+  </form>
+</head>
