@@ -8,7 +8,6 @@ from reportlab.lib.units import mm
 from reportlab.graphics.barcode import getCodeNames, createBarcodeDrawing
 from reportlab.graphics.shapes import Drawing
 from datetime import datetime
-from urllib import quote
 
 
 app = Flask(__name__)
@@ -50,21 +49,21 @@ def form():
     try:
         if not (code in getCodeNames()):
             flash("Code "+code+" not supported allowed are : " + str(getCodeNames()))
-            return render_template('main.html', codes=getCodeNames(), count=count, value=start)
+            return render_template('main.html', codes=getCodeNames(), count=count, value=value, scale=scale)
 
         if value.isdigit() and count.isdigit():
             if int(count) > 1000:
                 flash("Please enter a lower count - maximum is 1000.")
-                return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value)
+                return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value, scale=scale)
 
         if action == 'Generate PDF':
             if value.isdigit() and count.isdigit():
                 return redirect(url_for('pdflist', code=code, scale=int(scale), start=value, count=count))
             else:
-                return redirect(url_for('pdf', code=code, scale=int(scale), value=quote(value, '')))
+                return redirect(url_for('pdf', code=code, scale=int(scale), value=value))
         else:
             return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value,
-                                   bcimage=url_for('img', code=code, scale=int(scale), value=quote(value, '')))
+                                   bcimage=url_for('img', code=code, scale=int(scale), value=value))
 
 
     except:
@@ -83,7 +82,7 @@ def pdflist(code, start, count, scale):
             genBarcode(code, str(start+i), p, scale)
     except:
         flash("Error while generating a " + code + ": " + str(sys.exc_info()[0]))
-        return render_template('main.html', code=code, codes=getCodeNames(), count=count, value=start)
+        return render_template('main.html', code=code, codes=getCodeNames(), count=count, value=start, scale=scale)
 
     p.save()
 
@@ -95,7 +94,7 @@ def pdflist(code, start, count, scale):
     response.mimetype = 'application/pdf'
     return response
 
-@app.route('/i/<code>/<int:scale>/<value>')
+@app.route('/i/<code>/<int:scale>/<path:value>')
 def img(code, value, scale):
     try:
         dr = createBarcodeDrawing(code, value=str(value), humanReadable=True)
@@ -112,7 +111,7 @@ def img(code, value, scale):
 
 
 
-@app.route('/<code>/<int:scale>/<value>')
+@app.route('/<code>/<int:scale>/<path:value>')
 def pdf(code, value, scale):
     output = cStringIO.StringIO()
 
@@ -121,7 +120,7 @@ def pdf(code, value, scale):
         genBarcode(code, str(value), p, scale)
     except:
         flash("Error while generating a " + code + ": " + str(sys.exc_info()[0]))
-        return render_template('main.html', code=code, codes=getCodeNames(), value=value)
+        return render_template('main.html', code=code, codes=getCodeNames(), value=value, scale=scale)
 
     p.save()
 
