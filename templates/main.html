@@ -17,6 +17,7 @@
   <h1>Barcode</h1>
   <form id="pdf" method="get" action="{{ url_for('form') }}" class=add-entry>
   	<dl>
+		{%if scale is defined %}<input name="scale" type="hidden" value="{{scale}}" />{%endif%}
   		{%if codes is defined %}
   		<dt>Code<dd><select name="code">
   		{% for c in codes %}
@@ -35,8 +36,13 @@
   		<dd><input name="value" type ="text" value="{{value}}" />
 		<dt>Count
 		<dd><input name="count" type ="text" value="{{count}}"/>
-		<dd><input type="submit" value="Generate PDF"/>
+		<dd><input type="submit" name="action" value="Generate PDF"/>
+		<dd><input type="submit" name="action" value="Show"/>
 	 </dl>
   </form>
+    {%if bcimage is defined %}<div class=image>
+  <img src="{{bcimage}}"/>
+        </div>
+  {%endif%}
 </div>
 </head>
