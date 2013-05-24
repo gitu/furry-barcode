@@ -60,6 +60,10 @@ def pdflist(code,start,count,scale):
 	if not (code in getCodeNames()):
 		flash("Code "+code+" not supported allowed are : " + str(getCodeNames()))
 		return render_template('main.html',codes=getCodeNames())
+	
+	if count > 5000:
+		flash("Please choose a bit lower number for count maximum is 5000.")
+		return render_template('main.html',codes=getCodeNames())		
 		
 	for i in range(count+0):
 		genBarcode(code,str(start+i),p,scale)
