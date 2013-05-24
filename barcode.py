@@ -54,7 +54,8 @@ def form():
         if value.isdigit() and count.isdigit():
             if int(count) > 1000:
                 flash("Please enter a lower count - maximum is 1000.")
-                return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value, scale=scale)
+                return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value,
+                                       scale=scale)
 
         if action == 'Generate PDF':
             if value.isdigit() and count.isdigit():
@@ -62,13 +63,13 @@ def form():
             else:
                 return redirect(url_for('pdf', code=code, scale=int(scale), value=value))
         else:
-            return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value,
+            return render_template('main.html', codes=getCodeNames(), code=code, count=count, value=value, scale=scale,
                                    bcimage=url_for('img', code=code, scale=int(scale), value=value))
 
 
     except:
         flash("Error while generating a " + code + ": " + str(sys.exc_info()[0]))
-        return render_template('main.html', code=code, codes=getCodeNames(), count=count, value=value)
+        return render_template('main.html', code=code, codes=getCodeNames(), count=count, value=value, scale=scale)
 
 
 @app.route('/<code>/<int:scale>/<int:start>/<int:count>')
