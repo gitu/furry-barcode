@@ -1,7 +1,7 @@
 import os
 import sys
 import cStringIO
-from flask import Flask,make_response, request,render_template,redirect,url_for,flash
+from flask import Flask,make_response, request,render_template,redirect,url_for,flash,send_from_directory
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4,landscape
 from reportlab.lib.units import mm
@@ -106,7 +106,12 @@ def pdf(code,value,scale):
 	response.headers['Content-Disposition'] = "attachment; filename='"+code+"_"+str(value)+".pdf"
 	response.mimetype = 'application/pdf'
 	return response
-	
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+                               
 if __name__ == '__main__':
 	app.run()
 
