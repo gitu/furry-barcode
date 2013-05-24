@@ -59,14 +59,18 @@ def pdflist(code,start,count,scale):
 	
 	if not (code in getCodeNames()):
 		flash("Code "+code+" not supported allowed are : " + str(getCodeNames()))
-		return render_template('main.html',codes=getCodeNames())
+		return render_template('main.html',codes=getCodeNames(),count=count,value=start)
 	
-	if count >= 5000:
-		flash("Please choose a bit lower number for count - maximum is 5000.")
-		return render_template('main.html',codes=getCodeNames())		
+	if count > 1000:
+		flash("Please enter a lower count - maximum is 1000.")
+		return render_template('main.html',codes=getCodeNames(),code=code,count=count,value=start)		
 		
-	for i in range(count+0):
-		genBarcode(code,str(start+i),p,scale)
+	try:
+		for i in range(count+0):
+			genBarcode(code,str(start+i),p,scale)
+	except:
+		flash("Error while generating a " + code + ": " + str(sys.exc_info()[0]))
+		return render_template('main.html',code=code,codes=getCodeNames(),count=count,value=start)
 
 	p.save()
 
@@ -86,12 +90,12 @@ def pdf(code,value,scale):
 	p = canvas.Canvas(output,pagesize=landscape(A4))
 	if not (code in getCodeNames()):
 		flash("Code "+code+" not supported allowed are : " + str(getCodeNames()))
-		return render_template('main.html',codes=getCodeNames())
+		return render_template('main.html',codes=getCodeNames(),value=start)
 	try:
 		genBarcode(code,str(value),p,scale)
 	except:
 		flash("Error while generating a " + code + ": " + str(sys.exc_info()[0]))
-		return render_template('main.html',code=code,codes=getCodeNames())
+		return render_template('main.html',code=code,codes=getCodeNames(),count=count,value=start)
 
 	p.save()
 

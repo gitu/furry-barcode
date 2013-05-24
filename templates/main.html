@@ -24,12 +24,12 @@
 		</select>
 		{%elif code is defined %}<input name="code" type="hidden" value="{{code}}" />
 		{%else%}
-		<dt>Code<dd><input name="code" type ="text" >
+		<dt>Code<dd><input name="code" type ="text" value="{{code}}" >
   		{%endif%}
   		<dt>Value/Start
-  		<dd><input name="value" type ="text" />
+  		<dd><input name="value" type ="text" value="{{value}}" />
 		<dt>Count
-		<dd><input name="count" type ="text" />
+		<dd><input name="count" type ="text" value="{{count}}"/>
 		<dd><input type="submit" value="Submit"/>
 	 </dl>
   </form>
