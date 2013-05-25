@@ -15,10 +15,10 @@
     <div class=flash>{{ message }}</div>
   {% endfor %}
   <h1>Barcode</h1>
-  <form id="pdf" method="get" action="{{ url_for('form') }}" class=add-entry>
+  <form id="pdf" method="get" action="{{ action }}" class=add-entry>
   	<dl>
-		{%if scale is defined %}<input name="scale" type="hidden" value="{{scale}}" />{%endif%}
-  		{%if codes is defined %}
+		{%if scale is defined and scale != None%}<input name="scale" type="hidden" value="{{scale}}" />{%endif%}
+  		{%if codes is defined and codes != None %}
   		<dt>Code<dd><select name="code">
   		{% for c in codes %}
   			{%if code is defined and c==code%}
@@ -28,7 +28,7 @@
 		    {%endif%}
 		{% endfor %}
 		</select>
-		{%elif code is defined %}<input name="code" type="hidden" value="{{code}}" />
+		{%elif code is defined and code != None %}<input name="code" type="hidden" value="{{code}}" />
 		{%else%}
 		<dt>Code<dd><input name="code" type ="text" value="{{code}}" >
   		{%endif%}
@@ -40,7 +40,7 @@
 		<dd><input type="submit" name="action" value="Generate PDF"/>
 	 </dl>
   </form>
-    {%if bcimage is defined %}<div class=image>
+    {%if bcimage is defined and bcimage != None %}<div class=image>
   <img src="{{bcimage}}"/>
         </div>
   {%endif%}
